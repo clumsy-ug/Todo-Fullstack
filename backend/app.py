@@ -22,7 +22,7 @@ class Todo(db.Model):
         return self.content
 
 
-# Ensure this code runs within the application context
+# このコードがアプリケーションコンテキスト内で実行されることを保証する
 with app.app_context():
     db.create_all()
 
@@ -35,7 +35,6 @@ def hello():
 @app.route('/todos', methods=['GET'])
 def get_todos():
     todos = Todo.query.all()
-    # return jsonify([str(todo) for todo in todos])
     return jsonify([{'id': todo.id, 'content': todo.content} for todo in todos])
 
 
@@ -52,8 +51,8 @@ def add_todo():
 
 @app.route('/todos/<int:id>', methods=['DELETE'])
 def delete_todo(id):
-    # todo = Todo.query.get(id)
-    todo = Todo.query.get_or_404(id)  # idが存在しない場合は404エラーを返す（＝エラーハンドリングもできていることになる）
+    # todo = Todo.query.get(id)  # エラーハンドリングができていない（idが存在しない場合はNoneを返すだけ）
+    todo = Todo.query.get_or_404(id)  # idが存在しない場合は404エラーを返す
     db.session.delete(todo)
     db.session.commit()
     return jsonify({'id': todo.id, 'content': todo.content}), 201
@@ -62,7 +61,7 @@ def delete_todo(id):
 @app.route('/todos/<int:id>', methods=['PUT'])
 def update_todo(id):
     todo = Todo.query.get_or_404(id)
-    if not request.json or 'content' not in request.json:  # エラーハンドリング
+    if not request.json or 'content' not in request.json:
         return jsonify({'error': 'Bad Request', 'message': 'Content is required'}), 400
     todo.content = request.json['content']
     db.session.commit()

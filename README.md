@@ -1,5 +1,20 @@
 # Todoアプリ
 
-# React(JS) + Flask(Python)
+# 使用技術
+### front-end
+- React(JavaScript)
 
-# データベース(SQLite)と連携
+### back-end
+- Flask(Python)
+- SQLite
+
+# 工夫点
+- ロード中にスピナーを表示
+    - UX向上
+    - CSSで実現
+
+- ページをリロードするごとに、input欄にfocusがあたる
+    - 登録ボタンを押した後もfocusがinput欄に戻る
+    - useRefで実現
+
+- ログイン機能（未実装）

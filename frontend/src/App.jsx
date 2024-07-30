@@ -1,15 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
+import Spinner from './components/Spinner';
 import './styles.css'
 
-const Spinner = () => {
-    return (
-        <div className="spinner-container">
-            <div className="spinner"></div>
-            <div className="spinner-text">Loading...</div>
-        </div>
-    );
-};
 
 const Todo = () => {
     const [todos, setTodos] = useState([]);

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Spinner from './components/Spinner';
 import './styles.css'
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Todo = () => {
     const [todos, setTodos] = useState([]);
@@ -18,7 +19,8 @@ const Todo = () => {
         setLoading(true);
 
         try {
-            const res = await fetch('http://localhost:5000/todos');
+            // const res = await fetch('http://localhost:5000/todos');
+            const res = await fetch(`${API_URL}/todos`);
             if (!res.ok) {
                 throw new Error(`fetchTodos関数内でHTTP errorが発生した。 status: ${res.status}`);
             }
@@ -38,7 +40,8 @@ const Todo = () => {
         try {
             if (!inputVal) return;
 
-            const res = await fetch('http://localhost:5000/todos', {
+            const res = await fetch(`${API_URL}/todos`, {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +67,7 @@ const Todo = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`http://localhost:5000/todos/${id}`, {
+            const response = await fetch(`${API_URL}/todos/${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -86,7 +89,7 @@ const Todo = () => {
         setLoading(true);
 
         try {
-            const response = await fetch(`http://localhost:5000/todos/${id}`, {
+            const response = await fetch(`${API_URL}/todos/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

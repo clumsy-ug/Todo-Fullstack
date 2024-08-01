@@ -5,7 +5,6 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 # 環境に応じて.envファイルを読み込む
-# if os.environ.get("FLASK_ENV") == "production":
 if os.environ.get("ENVIRONMENT") == "production":
     load_dotenv(".env.production")
 else:
@@ -14,7 +13,6 @@ else:
 app = Flask(__name__)
 
 # 環境変数から設定を読み込む
-# app.config["ENV"] = os.environ.get("FLASK_ENV", "development")
 app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "1") == "1"
 
 # 環境変数から CORS の設定を読み込む

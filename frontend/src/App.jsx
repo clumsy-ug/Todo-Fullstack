@@ -19,7 +19,6 @@ const Todo = () => {
         setLoading(true);
 
         try {
-            // const res = await fetch('http://localhost:5000/todos');
             const res = await fetch(`${API_URL}/todos`);
             if (!res.ok) {
                 throw new Error(`fetchTodos関数内でHTTP errorが発生した。 status: ${res.status}`);

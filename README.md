@@ -9,6 +9,11 @@
 - SQLite
 
 # 工夫点
+- ログイン機能
+    - usernameとpasswordによる認証
+    - passwordはhash化することでセキュリティリスクを下げている
+    - generate_password_hashなどで実現
+
 - ロード中にスピナーを表示
     - UX向上
     - CSSで実現
@@ -20,7 +25,5 @@
 - エラーハンドリングを実装
     - try ~ catch ~ 構文などで実現
 
-- ログイン機能
-    - usernameとpasswordによる認証
-    - passwordはhash化することでセキュリティリスクを下げている
-    - generate_password_hashなどで実現
+- UI改善
+    - CSS, react-ions, toastにより実現

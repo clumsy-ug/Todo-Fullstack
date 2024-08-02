@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaTrash, FaEdit, FaPlus, FaSignOutAlt } from 'react-icons/fa';
 import Spinner from './components/Spinner';
+import toast, { Toaster } from 'react-hot-toast';
 import './styles.css'
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -40,6 +41,7 @@ const App = () => {
             const data = await res.json();
             setTodos(data);
         } catch (err) {
+            toast.error('Error fetching todos.');
             console.error('Error fetching todos:', err);
         }
         setLoading(false);
@@ -70,7 +72,9 @@ const App = () => {
             setTodos([...todos, data]);
             setInputVal('');
             inputRef.current.focus();
+            toast.success('Todo added successfully.');
         } catch (err) {
+            toast.error('Error adding todo.');
             console.error('Error adding todo:', err);
         }
         setLoading(false);
@@ -90,7 +94,9 @@ const App = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             await fetchTodos();
+            toast.success('Todo deleted successfully.');
         } catch (err) {
+            toast.error('Error deleting todo.');
             console.error('Error deleting todo:', err);
         }
         setLoading(false);
@@ -114,7 +120,9 @@ const App = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             await fetchTodos();
+            toast.success('Todo updated successfully.');
         } catch (err) {
+            toast.error('Error updating todo.');
             console.error('Error updating todo:', err);
         }
         setLoading(false);
@@ -138,13 +146,16 @@ const App = () => {
                     localStorage.setItem('username', username);
                     setIsLoggedIn(true);
                     fetchTodos();
+                    toast.success('Login successful.');
                 } else {
                     setIsRegistering(false);
+                    toast.success('Registration successful.');
                 }
             } else {
-                alert(data.msg);
+                toast.error(data.msg);
             }
         } catch (error) {
+            toast.error('Error during authentication.');
             console.error('Error:', error);
         }
         setPassword('');
@@ -156,11 +167,13 @@ const App = () => {
         setIsLoggedIn(false);
         setUsername('');
         setTodos([]);
+        toast.success('Logged out successfully.');
     }
 
     if (!isLoggedIn) {
         return (
             <div className="auth-container">
+                <Toaster />
                 <h1>{isRegistering ? 'Register' : 'Login'}</h1>
                 <form onSubmit={handleAuth}>
                     <input
@@ -177,10 +190,10 @@ const App = () => {
                         placeholder="Password"
                         required
                     />
-                    <button type="submit" className="btn register-or-login">{isRegistering ? 'Register' : 'Login'}</button>
+                    <button type="submit" className="btn">{isRegistering ? 'Register' : 'Login'}</button>
                 </form>
                 <button onClick={() => setIsRegistering(!isRegistering)} className="btn btn-link">
-                    {isRegistering ? 'Already have an account? →Login' : 'No account? →register'}
+                    {isRegistering ? 'Already have an account? Login' : 'Need to register?'}
                 </button>
             </div>
         );
@@ -188,6 +201,7 @@ const App = () => {
 
     return (
         <div className="container">
+            <Toaster />
             <div className="header">
                 <div className="welcome-message">Welcome, <b>{username}</b> !</div>
                 <h1>Todoリスト</h1>

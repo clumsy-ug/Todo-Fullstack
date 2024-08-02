@@ -190,7 +190,7 @@ const App = () => {
                         placeholder="Password"
                         required
                     />
-                    <button type="submit" className="btn">{isRegistering ? 'Register' : 'Login'}</button>
+                    <button type="submit" className="btn register-or-login">{isRegistering ? 'Register' : 'Login'}</button>
                 </form>
                 <button onClick={() => setIsRegistering(!isRegistering)} className="btn btn-link">
                     {isRegistering ? 'Already have an account? Login' : 'Need to register?'}

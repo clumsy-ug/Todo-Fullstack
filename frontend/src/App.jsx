@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaTrash, FaEdit, FaPlus, FaSignOutAlt } from 'react-icons/fa';
 import Spinner from './components/Spinner';
 import './styles.css'
 
@@ -16,8 +17,10 @@ const App = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token) {
+        const storedUsername = localStorage.getItem('username');
+        if (token && storedUsername) {
             setIsLoggedIn(true);
+            setUsername(storedUsername);
             fetchTodos();
         }
     }, []);
@@ -132,6 +135,7 @@ const App = () => {
             if (response.ok) {
                 if (!isRegistering) {
                     localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('username', username);
                     setIsLoggedIn(true);
                     fetchTodos();
                 } else {
@@ -143,19 +147,20 @@ const App = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-        setUsername('');
         setPassword('');
     };
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
         setIsLoggedIn(false);
+        setUsername('');
         setTodos([]);
     }
 
     if (!isLoggedIn) {
         return (
-            <div>
+            <div className="auth-container">
                 <h1>{isRegistering ? 'Register' : 'Login'}</h1>
                 <form onSubmit={handleAuth}>
                     <input
@@ -172,40 +177,49 @@ const App = () => {
                         placeholder="Password"
                         required
                     />
-                    <button type="submit">{isRegistering ? 'Register' : 'Login'}</button>
+                    <button type="submit" className="btn register-or-login">{isRegistering ? 'Register' : 'Login'}</button>
                 </form>
-                <button onClick={() => setIsRegistering(!isRegistering)}>
-                    {isRegistering ? 'Already have an account? Login' : 'Need to register?'}
+                <button onClick={() => setIsRegistering(!isRegistering)} className="btn btn-link">
+                    {isRegistering ? 'Already have an account? →Login' : 'No account? →register'}
                 </button>
             </div>
         );
     }
 
     return (
-        <div>
-            <h1>Todoリスト</h1>
-            <button onClick={logout}>Logout</button>
+        <div className="container">
+            <div className="header">
+                <div className="welcome-message">Welcome, <b>{username}</b> !</div>
+                <h1>Todoリスト</h1>
+                <button onClick={logout} className="btn btn-logout"><FaSignOutAlt /> Logout</button>
+            </div>
 
             {loading && <Spinner />}
 
-            {todos.map((todo) => (
-                <div key={todo.id}>
-                    <span className='list-todo'>{todo.content}</span>
-                    <button className='list-todo' onClick={() => deleteTodo(todo.id)}>削除</button>
-                    <button className='list-todo' onClick={() => updateTodo(todo.id, todo.content)}>編集</button>
-                </div>
-            ))}
+            <div className="todo-list">
+                {todos.map((todo) => (
+                    <div key={todo.id} className="todo-item">
+                        <span>{todo.content}</span>
+                        <div className="todo-actions">
+                            <button onClick={() => updateTodo(todo.id, todo.content)} className="btn btn-edit"><FaEdit /></button>
+                            <button onClick={() => deleteTodo(todo.id)} className="btn btn-delete"><FaTrash /></button>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-            <br />
-
-            <input
-                type="text"
-                value={inputVal}
-                placeholder='新しいTodoを入力'
-                ref={inputRef}
-                onChange={e => setInputVal(e.target.value)}
-            />
-            <button onClick={addTodo}>登録</button>
+            <div className="todo-input">
+                <input
+                    type="text"
+                    value={inputVal}
+                    placeholder='新しいTodoを入力'
+                    ref={inputRef}
+                    onChange={e => setInputVal(e.target.value)}
+                />
+                <button onClick={addTodo} className="btn btn-add">
+                    <FaPlus /> <span>登録</span>
+                </button>
+            </div>
         </div>
     );
 };

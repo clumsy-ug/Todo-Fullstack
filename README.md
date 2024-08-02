@@ -20,4 +20,7 @@
 - エラーハンドリングを実装
     - try ~ catch ~ 構文などで実現
 
-- ログイン機能（未実装）
+- ログイン機能
+    - usernameとpasswordによる認証
+    - passwordはhash化することでセキュリティリスクを下げている
+    - generate_password_hashなどで実現

@@ -3,6 +3,13 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+)
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # 環境に応じて.envファイルを読み込む
 if os.environ.get("ENVIRONMENT") == "production":
@@ -25,15 +32,33 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+# JWT設定
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "your-secret-key")
+jwt = JWTManager(app)
+
 db = SQLAlchemy(app)
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(80), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
-    def __init__(self, content):
+    def __init__(self, content, user_id):
         self.content = content
+        self.user_id = user_id
 
     def __repr__(self):
         return self.content
@@ -44,39 +69,81 @@ with app.app_context():
     db.create_all()
 
 
-@app.route("/")
-def hello():
-    return "Hello from Flask!"
+@app.route("/register", methods=["POST"])
+def register():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    
+    if not username and not password:
+        return jsonify({"msg": "Missing username and password"}), 400
+    
+    if not username:
+        return jsonify({"msg": "Missing username"}), 400
+    
+    if not password:
+        return jsonify({"msg": "Missing password"}), 400
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"msg": "Username already exists"}), 400
+
+    user = User(username=username)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"msg": "User created successfully"}), 201
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    return jsonify({"msg": "Bad username or password"}), 401
 
 
 @app.route("/todos", methods=["GET"])
+@jwt_required()
 def get_todos():
-    todos = Todo.query.all()
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    todos = Todo.query.filter_by(user_id=user.id).all()
     return jsonify([{"id": todo.id, "content": todo.content} for todo in todos])
 
 
 @app.route("/todos", methods=["POST"])
+@jwt_required()
 def add_todo():
     if not request.json or "content" not in request.json:
         return jsonify({"error": "Bad Request", "message": "Content is required"}), 400
     content = request.json["content"]
-    todo = Todo(content=content)
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    todo = Todo(content=content, user_id=user.id)
     db.session.add(todo)
     db.session.commit()
     return jsonify({"id": todo.id, "content": todo.content}), 201
 
 
 @app.route("/todos/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_todo(id):
-    todo = Todo.query.get_or_404(id)
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    todo = Todo.query.filter_by(id=id, user_id=user.id).first_or_404()
     db.session.delete(todo)
     db.session.commit()
     return jsonify({"id": todo.id, "content": todo.content}), 200
 
 
 @app.route("/todos/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_todo(id):
-    todo = Todo.query.get_or_404(id)
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    todo = Todo.query.filter_by(id=id, user_id=user.id).first_or_404()
     if not request.json or "content" not in request.json:
         return jsonify({"error": "Bad Request", "message": "Content is required"}), 400
     todo.content = request.json["content"]

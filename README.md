@@ -41,5 +41,37 @@
         - backend/ディレクトリでターミナルを開き、`pytest`を実行
         - pytestで実現
 
+# 使用方法
+1. backend serverを立ち上げる
+
+backend/ディレクトリでターミナルを開き、以下を実行
+```bash
+python app.py
+```
+
+2. frontend serverを立ち上げる
+
+frontend/ディレクトリでターミナルを開き、以下を実行
+```bash
+npm run dev
+```
+
+3. databaseを確認する
+
+backend/instanceディレクトリでターミナルを開き、
+```bash
+sqlite3 my_database.db
+```
+を実行する。そして
+```sql
+.tables
+```
+を実行してtodoテーブルとuserテーブルがあることを確認する。<br>
+そしてそれぞれのテーブルの中身を確認する方法は以下。
+```sql
+select * from todo;
+select * from todo;
+```
+
 # Upcoming
 [issue](https://github.com/clumsy-ug/Todo-Fullstack/issues)を参照

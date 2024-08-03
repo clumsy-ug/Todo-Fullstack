@@ -2,14 +2,14 @@
 
 ![todo_fullstack](https://github.com/user-attachments/assets/9736efa1-77b3-41c2-8352-1df068969d4b)
 
-# 使用技術
-## front-end
+# Technology used
+### front-end
 - React(JavaScript)
 
-## back-end
+### back-end
 - Flask(Python)
 
-## database
+### database
 - SQLite
 
 # Points

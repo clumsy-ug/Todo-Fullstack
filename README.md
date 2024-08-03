@@ -32,5 +32,14 @@
 - UI改善
     - CSS, react-ions, toastにより実現
 
+- テストを実装
+    - frontend
+        - frontend/ディレクトリで`npm run test`
+        - Vitestで実現
+    
+    - backend
+        - あああ
+        - pytestで実現？
+
 # Upcoming
 [issue](https://github.com/clumsy-ug/Todo-Fullstack/issues)を参照

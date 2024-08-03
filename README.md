@@ -56,7 +56,7 @@ frontend/ディレクトリでターミナルを開き、以下を実行
 npm run dev
 ```
 
-3. databaseを確認する（オプション）
+3. databaseを確認する(option)
 
 backend/instanceディレクトリでターミナルを開き、
 ```bash
@@ -70,7 +70,7 @@ sqlite3 my_database.db
 そしてそれぞれのテーブルの中身を確認する方法は以下。
 ```sql
 select * from todo;
-select * from todo;
+select * from user;
 ```
 
 # Upcoming

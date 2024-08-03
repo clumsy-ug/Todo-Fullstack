@@ -24,7 +24,7 @@
 
 - ページをリロードするごとに、input欄にfocusがあたる
     - 登録ボタンを押した後もfocusがinput欄に戻る
-    - useRefで実現
+    - useRef, autofocus属性で実現
 
 - エラーハンドリングを実装
     - try ~ catch ~ 構文などで実現

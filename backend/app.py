@@ -1,3 +1,5 @@
+"""A module that provides an entry point for Flask applications."""
+
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -40,18 +42,24 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
+    """A class that represents a user model."""
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
 
     def set_password(self, password):
+        """A function that sets the password hash."""
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        """A function that checks the password hash."""
         return check_password_hash(self.password_hash, password)
 
 
 class Todo(db.Model):
+    """A class that represents a todo model."""
+
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(80), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -71,15 +79,14 @@ with app.app_context():
 
 @app.route("/register", methods=["POST"])
 def register():
+    """A function that registers a new user."""
     username = request.json.get("username", None)
     password = request.json.get("password", None)
-    
+
     if not username and not password:
         return jsonify({"msg": "Missing username and password"}), 400
-    
     if not username:
         return jsonify({"msg": "Missing username"}), 400
-    
     if not password:
         return jsonify({"msg": "Missing password"}), 400
 
@@ -95,6 +102,7 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
+    """A function that logs in a user."""
     username = request.json.get("username", None)
     password = request.json.get("password", None)
     user = User.query.filter_by(username=username).first()
@@ -107,6 +115,7 @@ def login():
 @app.route("/todos", methods=["GET"])
 @jwt_required()
 def get_todos():
+    """A function that returns all todos."""
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     todos = Todo.query.filter_by(user_id=user.id).all()
@@ -116,6 +125,7 @@ def get_todos():
 @app.route("/todos", methods=["POST"])
 @jwt_required()
 def add_todo():
+    """A function that adds a new todo."""
     if not request.json or "content" not in request.json:
         return jsonify({"error": "Bad Request", "message": "Content is required"}), 400
     content = request.json["content"]
@@ -127,23 +137,25 @@ def add_todo():
     return jsonify({"id": todo.id, "content": todo.content}), 201
 
 
-@app.route("/todos/<int:id>", methods=["DELETE"])
+@app.route("/todos/<int:todo_id>", methods=["DELETE"])
 @jwt_required()
-def delete_todo(id):
+def delete_todo(todo_id):
+    """A function that deletes a todo."""
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
-    todo = Todo.query.filter_by(id=id, user_id=user.id).first_or_404()
+    todo = Todo.query.filter_by(id=todo_id, user_id=user.id).first_or_404()
     db.session.delete(todo)
     db.session.commit()
     return jsonify({"id": todo.id, "content": todo.content}), 200
 
 
-@app.route("/todos/<int:id>", methods=["PUT"])
+@app.route("/todos/<int:todo_id>", methods=["PUT"])
 @jwt_required()
-def update_todo(id):
+def update_todo(todo_id):
+    """A function that updates a todo."""
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
-    todo = Todo.query.filter_by(id=id, user_id=user.id).first_or_404()
+    todo = Todo.query.filter_by(id=todo_id, user_id=user.id).first_or_404()
     if not request.json or "content" not in request.json:
         return jsonify({"error": "Bad Request", "message": "Content is required"}), 400
     todo.content = request.json["content"]

@@ -44,6 +44,10 @@
             - `pytest --cov=app --cov-report=html tests/`
         - pytestで実現
 
+- コードスタイルのチェック
+    - pylintで実現
+        - backend/ディレクトリで`pylint app.py`実行
+
 # 使用方法
 1. backend serverを立ち上げる
 

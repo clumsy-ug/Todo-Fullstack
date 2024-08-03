@@ -80,11 +80,11 @@ const App = () => {
         setLoading(false);
     };
 
-    const deleteTodo = async (id) => {
+    const deleteTodo = async (todo_id) => {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/todos/${id}`, {
+            const response = await fetch(`${API_URL}/todos/${todo_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -102,13 +102,13 @@ const App = () => {
         setLoading(false);
     }
 
-    const updateTodo = async (id, currentContent) => {
+    const updateTodo = async (todo_id, currentContent) => {
         const content = prompt('編集内容を入力してください', currentContent);
         if (!content) return;
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/todos/${id}`, {
+            const response = await fetch(`${API_URL}/todos/${todo_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

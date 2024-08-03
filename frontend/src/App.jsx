@@ -182,6 +182,7 @@ const App = () => {
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Username"
                         required
+                        autoFocus
                     />
                     <input
                         type="password"

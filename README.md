@@ -1,17 +1,21 @@
-# Todoアプリ
+# Todo-App
 
-# 使用技術
-### front-end
+![todo_fullstack](https://github.com/user-attachments/assets/9736efa1-77b3-41c2-8352-1df068969d4b)
+
+# Technology used
+## front-end
 - React(JavaScript)
 
-### back-end
+## back-end
 - Flask(Python)
+
+## database
 - SQLite
 
-# 工夫点
+# Functions
 - ログイン機能
     - usernameとpasswordによる認証
-    - passwordはhash化することでセキュリティリスクを下げている
+    - passwordはSHA-256によりhash化することでセキュリティリスクを下げている
     - generate_password_hashなどで実現
 
 - ロード中にスピナーを表示
@@ -27,3 +31,6 @@
 
 - UI改善
     - CSS, react-ions, toastにより実現
+
+# Upcoming
+[issue](https://github.com/clumsy-ug/Todo-Fullstack/issues)を参照

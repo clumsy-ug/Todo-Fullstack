@@ -56,7 +56,7 @@ frontend/ディレクトリでターミナルを開き、以下を実行
 npm run dev
 ```
 
-3. databaseを確認する
+3. databaseを確認する（オプション）
 
 backend/instanceディレクトリでターミナルを開き、
 ```bash

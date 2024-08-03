@@ -38,7 +38,10 @@
         - Vitestで実現
     
     - backend
-        - backend/ディレクトリでターミナルを開き、`pytest`を実行
+        - backend/ディレクトリでターミナルを開き、用途別に以下から選んで実行
+            - `pytest`
+            - `pytest --cov=app tests/`
+            - `pytest --cov=app --cov-report=html tests/`
         - pytestで実現
 
 # 使用方法

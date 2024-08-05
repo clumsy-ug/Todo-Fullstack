@@ -77,41 +77,6 @@ with app.app_context():
     db.create_all()
 
 
-@app.route("/register", methods=["POST"])
-def register():
-    """A function that registers a new user."""
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-
-    if not username and not password:
-        return jsonify({"msg": "Missing username and password"}), 400
-    if not username:
-        return jsonify({"msg": "Missing username"}), 400
-    if not password:
-        return jsonify({"msg": "Missing password"}), 400
-
-    if User.query.filter_by(username=username).first():
-        return jsonify({"msg": "Username already exists"}), 400
-
-    user = User(username=username)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"msg": "User created successfully"}), 201
-
-
-@app.route("/login", methods=["POST"])
-def login():
-    """A function that logs in a user."""
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
-    return jsonify({"msg": "Bad username or password"}), 401
-
-
 @app.route("/todos", methods=["GET"])
 @jwt_required()
 def get_todos():
@@ -161,6 +126,41 @@ def update_todo(todo_id):
     todo.content = request.json["content"]
     db.session.commit()
     return jsonify({"id": todo.id, "content": todo.content}), 200
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    """A function that registers a new user."""
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    if not username and not password:
+        return jsonify({"msg": "Missing username and password"}), 400
+    if not username:
+        return jsonify({"msg": "Missing username"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password"}), 400
+
+    if User.query.filter_by(username=username).first():
+        return jsonify({"msg": "Username already exists"}), 400
+
+    user = User(username=username)
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"msg": "User created successfully"}), 201
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    """A function that logs in a user."""
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    return jsonify({"msg": "Bad username or password"}), 401
 
 
 if __name__ == "__main__":

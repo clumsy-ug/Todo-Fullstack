@@ -51,7 +51,7 @@ const App = () => {
         setLoading(true);
         try {
             if (!inputVal) {
-                alert('Todoを入力してください');
+                toast.error('空のTodoは登録できません');
                 setLoading(false);
                 return;
             }
@@ -104,7 +104,10 @@ const App = () => {
 
     const updateTodo = async (todo_id, currentContent) => {
         const content = prompt('編集内容を入力してください', currentContent);
-        if (!content) return;
+        if (!content) {
+            toast.error('空のTodoは登録できません');
+            return;
+        }
         setLoading(true);
         try {
             const token = localStorage.getItem('token');

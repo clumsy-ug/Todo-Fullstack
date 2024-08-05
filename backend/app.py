@@ -134,6 +134,9 @@ def register():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
 
+    # username, password共にiuput欄をそもそもrequiredにしてある(App.jsx側で)ので、
+    # どちらかもしくはどちらも空のまま送られることはないはずだが、
+    # 予想外のバグ(例えば送ってる途中でデータが消し飛ぶとか)が発生した時のために念の為エラーハンドリングしておく
     if not username and not password:
         return jsonify({"msg": "Missing username and password"}), 400
     if not username:

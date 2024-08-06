@@ -48,7 +48,7 @@
     - pylintで実現
         - backend/ディレクトリで`pylint app.py`実行
 
-# 使用方法
+# How to use
 1. backend serverを立ち上げる
 
 backend/ディレクトリでターミナルを開き、以下を実行

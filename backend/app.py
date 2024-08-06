@@ -151,7 +151,7 @@ def register():
     user.set_password(password)
     db.session.add(user)
     db.session.commit()
-    return jsonify({"msg": "User created successfully"}), 201
+    return jsonify({"msg": "Registration successful"}), 201
 
 
 @app.route("/login", methods=["POST"])

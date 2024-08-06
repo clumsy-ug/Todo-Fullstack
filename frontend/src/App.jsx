@@ -41,7 +41,7 @@ const App = () => {
             const data = await res.json();
             setTodos(data);
         } catch (err) {
-            toast.error('Error fetching todos.');
+            toast.error('Error fetching todos');
             console.error('Error fetching todos:', err);
         }
         setLoading(false);
@@ -72,9 +72,9 @@ const App = () => {
             setTodos([...todos, data]);
             setInputVal('');
             inputRef.current.focus();
-            toast.success('Todo added successfully.');
+            toast.success('Todo added successfully');
         } catch (err) {
-            toast.error('Error adding todo.');
+            toast.error('Error adding todo');
             console.error('Error adding todo:', err);
         }
         setLoading(false);
@@ -94,9 +94,9 @@ const App = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             await fetchTodos();
-            toast.success('Todo deleted successfully.');
+            toast.success('Todo deleted successfully');
         } catch (err) {
-            toast.error('Error deleting todo.');
+            toast.error('Error deleting todo');
             console.error('Error deleting todo:', err);
         }
         setLoading(false);
@@ -123,9 +123,9 @@ const App = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             await fetchTodos();
-            toast.success('Todo updated successfully.');
+            toast.success('Todo updated successfully');
         } catch (err) {
-            toast.error('Error updating todo.');
+            toast.error('Error updating todo');
             console.error('Error updating todo:', err);
         }
         setLoading(false);
@@ -149,16 +149,16 @@ const App = () => {
                     localStorage.setItem('username', username);
                     setIsLoggedIn(true);
                     fetchTodos();
-                    toast.success('Login successful.');
+                    toast.success('Login successful');
                 } else {
                     setIsRegistering(false);
-                    toast.success('Registration successful.');
+                    toast.success(data.msg);
                 }
             } else {
                 toast.error(data.msg);
             }
         } catch (error) {
-            toast.error('Error during authentication.');
+            toast.error('Error during authentication');
             console.error('Error:', error);
         }
         setPassword('');
@@ -170,7 +170,7 @@ const App = () => {
         setIsLoggedIn(false);
         setUsername('');
         setTodos([]);
-        toast.success('Logged out successfully.');
+        toast.success('Logged out successfully');
     }
 
     if (!isLoggedIn) {

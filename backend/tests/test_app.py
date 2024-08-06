@@ -108,7 +108,7 @@ def test_register(client):
         "/register", json={"username": "testuser", "password": "testpass"}
     )
     assert response.status_code == 201
-    assert response.json["msg"] == "User created successfully"
+    assert response.json["msg"] == "Registration successful"
 
 
 def test_login(client):

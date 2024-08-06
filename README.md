@@ -74,10 +74,10 @@ sqlite3 my_database.db
 .tables
 ```
 を実行してtodoテーブルとuserテーブルがあることを確認する。<br>
-そしてそれぞれのテーブルの中身を確認する方法は以下。
+そしてそれぞれのテーブルの中身を確認するSQLコマンドは以下。
 ```sql
-select * from todo;
-select * from user;
+SELECT * FROM todo;
+SELECT * FROM user;
 ```
 
 # Upcoming

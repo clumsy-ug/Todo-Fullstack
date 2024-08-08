@@ -1,6 +1,6 @@
 # Todo-App
 
-![todo_fullstack](https://github.com/user-attachments/assets/9736efa1-77b3-41c2-8352-1df068969d4b)
+![todologin](https://github.com/user-attachments/assets/57b8546b-0fc9-4903-a8fe-2a650d5c34bb)
 
 # Technology used
 ### front-end

@@ -25,3 +25,4 @@ dist-ssr
 
 # me
 .env.*
+coverage

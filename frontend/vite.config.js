@@ -7,5 +7,15 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/setupTests.js', // 必要に応じて設定ファイルを指定
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'src/main.jsx',  // main.jsxをカバレッジレポートから除外する(main.jsxはテスト対象外)
+        '.eslintrc.cjs',
+        'vite.config.js',
+        'node_modules/**'
+      ],
+    },
   },
 })

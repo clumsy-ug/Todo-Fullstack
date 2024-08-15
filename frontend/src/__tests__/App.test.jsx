@@ -35,9 +35,10 @@ describe('App Component', () => {
         localStorage.setItem('token', 'fake_token');
         localStorage.setItem('username', 'testuser');
 
+        /* fetchのモックを設定 */
         global.fetch.mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve([]),
+            json: () => Promise.resolve([]),  // テスト開始時はtodoリストが空なことを保証
         }).mockResolvedValueOnce({
             ok: true,
             json: () => Promise.resolve({ id: 1, content: 'New todo' }),
@@ -59,15 +60,18 @@ describe('App Component', () => {
         localStorage.setItem('token', 'fake_token');
         localStorage.setItem('username', 'testuser');
 
+        /* fetchのモックを設定 */
+        // 各呼び出し（mockResolvedValueOnce）は非同期で、実際のAPI呼び出しに対応する
+        // そのためこのfetchのモック部分で削除処理自体は書いていないが、削除処理が成功した瞬間、そして成功した後はどのようなものを返すかを書いている
         global.fetch.mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve([{ id: 1, content: 'Test todo' }]),
+            json: () => Promise.resolve([{ id: 1, content: 'Test todo' }]),  // 初期Todoリストの取得
         }).mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve({ id: 1, content: 'Test todo' }),
+            json: () => Promise.resolve({ id: 1, content: 'Test todo' }),  // 削除操作の成功レスポンス
         }).mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve([]),
+            json: () => Promise.resolve([]),  // 削除操作後の更新されたTodoリストの取得(=空)
         });
 
         render(<App />);

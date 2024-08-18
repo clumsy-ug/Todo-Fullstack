@@ -104,4 +104,4 @@ SELECT * FROM user;
 
 # Upcoming
 
-[issue](https://github.com/clumsy-ug/Todo-Fullstack/issues)を参照
+[issue](https://github.com/clumsy-ug/Todo-App/issues)を参照

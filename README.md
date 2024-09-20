@@ -64,7 +64,12 @@
 
 # How to use
 
-1. backend server を立ち上げる
+1. 必要なパッケージのインストール
+```bash
+pip install -r requirements.txt
+```
+
+2. backend server を立ち上げる
 
 backend/ディレクトリでターミナルを開き、以下を実行
 
@@ -72,7 +77,7 @@ backend/ディレクトリでターミナルを開き、以下を実行
 python app.py
 ```
 
-2. frontend server を立ち上げる
+3. frontend server を立ち上げる
 
 frontend/ディレクトリでターミナルを開き、以下を実行
 
@@ -80,7 +85,7 @@ frontend/ディレクトリでターミナルを開き、以下を実行
 npm run dev
 ```
 
-3. database を確認する(option)
+4. database を確認する(option)
 
 backend/instance ディレクトリでターミナルを開き、
 
